@@ -45,7 +45,36 @@ onUiLoaded(function() {
     buttonShowAllPages.addEventListener("click", settingsShowAllTabs);
 });
 
+const storedSettings = localStorage.getItem('gradio-settings-tabs');
+const settingsTabs = gradioApp().querySelector('#settings div');
 
+function restoreTabState() {
+  if (!storedSettings) return;
+  const expandedTabs = JSON.parse(storedSettings);
+  settingsTabs.querySelectorAll('div').forEach(tab => {
+    tab.style.display = expandedTabs.includes(tab.id) ? 'block' : 'none';
+  });
+}
+
+function updateStoredSettings() {
+  const expandedTabs = Array.from(settingsTabs.querySelectorAll('div:not([style*="none"])'))
+    .map(tab => tab.id);
+  localStorage.setItem('gradio-settings-tabs', JSON.stringify(expandedTabs));
+}
+
+restoreTabState();
+
+settingsTabs.querySelectorAll('div button').forEach(button => {
+  button.addEventListener('click', function() {
+    const tabId = this.parentElement.id;
+    if (this.parentElement.style.display === 'block') {
+      this.parentElement.style.display = 'none';
+    } else {
+      this.parentElement.style.display = 'block';
+    }
+    updateStoredSettings();
+  });
+});
 
 onOptionsChanged(function() {
     if (gradioApp().querySelector('#settings .settings-category')) return;
