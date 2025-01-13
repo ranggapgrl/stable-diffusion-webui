@@ -48,6 +48,33 @@ function dropReplaceImage(imgWrap, files) {
     }
 }
 
+function showUploadError(message) {
+    const errorMessage = document.createElement('div');
+    errorMessage.textContent = message;
+    errorMessage.style.position = 'fixed';
+    errorMessage.style.top = '10px';
+    errorMessage.style.right = '10px';
+    errorMessage.style.padding = '10px';
+    errorMessage.style.backgroundColor = 'red';
+    errorMessage.style.color = 'white';
+    errorMessage.style.borderRadius = '5px';
+    document.body.appendChild(errorMessage);
+
+    setTimeout(() => {
+        errorMessage.remove();
+    }, 3000);
+}
+
+
+function isValidImageList(files) {
+    if (!files || files.length !== 1 || !['image/png', 'image/gif', 'image/jpeg'].includes(files[0].type)) {
+        showUploadError('Hanya file gambar yang diperbolehkan (PNG, GIF, JPEG).');
+        return false;
+    }
+    return true;
+}
+
+
 function eventHasFiles(e) {
     if (!e.dataTransfer || !e.dataTransfer.files) return false;
     if (e.dataTransfer.files.length > 0) return true;
