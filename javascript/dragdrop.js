@@ -48,6 +48,17 @@ function dropReplaceImage(imgWrap, files) {
     }
 }
 
+function previewImageBeforeUpload(fileInput) {
+    const imgPreview = fileInput.closest('.image-upload-wrapper').querySelector('.image-preview');
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        imgPreview.src = event.target.result;
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+}
+
+
+
 function eventHasFiles(e) {
     if (!e.dataTransfer || !e.dataTransfer.files) return false;
     if (e.dataTransfer.files.length > 0) return true;
