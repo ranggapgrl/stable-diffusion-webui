@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stabble Diffusion WebUI - Photo Upload</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f3f4f6;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 300px;
+    }
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: none;
+      text-align: center;
+    }
+    .popup.error {
+      border: 2px solid red;
+    }
+    .popup.success {
+      border: 2px solid green;
+    }
+    button {
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2563eb;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Upload Gambar</h2>
+    <input type="file" id="fileInput" accept="image/*">
+    <p id="errorText" style="color: red; display: none;">File yang diunggah harus berupa gambar.</p>
+    <div id="popup" class="popup"></div>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const errorText = document.getElementById('errorText');
+    const popup = document.getElementById('popup');
+
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+
+      if (file) {
+        if (file.type.startsWith("image/")) {
+          errorText.style.display = "none";
+          popup.textContent = `Gambar ${file.name} berhasil diunggah!`;
+          popup.className = 'popup success';
+          popup.style.display = "block";
+        } else {
+          popup.style.display = "none";
+          errorText.textContent = "File yang diunggah harus berupa gambar.";
+          errorText.style.display = "block";
+        }
+      }
+
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 3000);
+    });
+  </script>
+</body>
+</html>
